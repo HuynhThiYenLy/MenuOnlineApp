@@ -10,9 +10,8 @@ const Home = ({ navigation }) => {
   const { categoryChillData, categoryChillStatus } = useSelector(state => state.categoryChill);
   const { productData, productStatus } = useSelector(state => state.product);
   const { productByCateData, productByCateStatus } = useSelector(state => state.productByCate);
-  const [selectedCategory, setSelectedCategory] = useState(null); // Khởi tạo là null thay vì 'all'
+  const [selectedCategory, setSelectedCategory] = useState(null); 
 
-  // Lấy danh mục 'chill' và tất cả sản phẩm khi màn hình Home được render
   useEffect(() => {
     dispatch(GetCategoryChill());
     dispatch(GetProductAll());
@@ -53,19 +52,20 @@ const Home = ({ navigation }) => {
     <View style={styles.productItem}>
       <View style={styles.row}>
         <Image source={{ uri: item.img }} style={styles.productImage} />
-        <View style={styles.productInfo}>
+        <View style={styles.productInfoContainer}>
           <Text style={styles.productName}>{item.name}</Text>
           <Text style={styles.productPrice}>{item.price}</Text>
         </View>
         <TouchableOpacity style={styles.btnAddCart}>
           <Image
             source={require('../../img/add.webp')}
-            style={{ width: 25, height: 25 }}
+            style={styles.btnAddImage}
           />
         </TouchableOpacity>
       </View>
     </View>
   );
+
 
   return (
     <View style={styles.container}>
@@ -120,15 +120,20 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
+  productInfoContainer: {
+    flex: 1,
+    marginRight: 10,
+    marginLeft: 15,// Khoảng cách giữa thông tin sản phẩm và ảnh
+  },
   productInfo: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   container: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: '#eee',
     paddingHorizontal: 16,
     paddingTop: 16,
   },
@@ -179,8 +184,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   productItem: {
-    flex: 1,
-    flexDirection: "column",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
     backgroundColor: '#fff',
     borderRadius: 5,
@@ -209,12 +214,12 @@ const styles = StyleSheet.create({
     color: '#888',
   },
   btnAddCart: {
-    backgroundColor: '#ff7043',
-    padding: 8,
+    padding: 0,
     borderRadius: 5,
   },
   btnAddImage: {
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
   },
 });
+

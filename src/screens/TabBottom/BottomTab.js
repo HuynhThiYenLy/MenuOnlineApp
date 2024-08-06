@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-const Tab = createBottomTabNavigator();
-
+import { Image } from 'react-native';
+import { useUser } from '../../redux/userContext';
 import Cart from './Cart';
 import Home from './Home';
 import HoaDon from './HoaDon';
 import User from './User';
+
+const Tab = createBottomTabNavigator();
 
 const tabScreenOptions = ({ route }) => ({
   headerShown: false,
@@ -33,13 +33,25 @@ const tabScreenOptions = ({ route }) => ({
   tabBarLabel: ({ focused }) => null
 });
 
-const BottomTab = () => (
-  <Tab.Navigator screenOptions={tabScreenOptions} initialRouteName="Cart">
-    <Tab.Screen name="Home" component={Home} />
-    <Tab.Screen name="Cart" component={Cart} />
-    <Tab.Screen name="HoaDon" component={HoaDon} />
-    <Tab.Screen name="User" component={User} />
-  </Tab.Navigator>
-);
+const BottomTab = () => {
+  const { userID } = useUser(); // Lấy userID từ UserContext
+
+  return (
+    <Tab.Navigator screenOptions={tabScreenOptions} initialRouteName="Cart">
+      <Tab.Screen name="Home">
+        {props => <Home {...props} userID={userID} />}
+      </Tab.Screen>
+      <Tab.Screen name="Cart">
+        {props => <Cart {...props} userID={userID} />}
+      </Tab.Screen>
+      <Tab.Screen name="HoaDon">
+        {props => <HoaDon {...props} userID={userID} />}
+      </Tab.Screen>
+      <Tab.Screen name="User">
+        {props => <User {...props} userID={userID} />}
+      </Tab.Screen>
+    </Tab.Navigator>
+  );
+};
 
 export default BottomTab;

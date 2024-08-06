@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ImageBackground, TouchableOpacity, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { DangNhapTaiKhoan } from '../../redux/reducer/loginSlice';
+import { useUser } from '../../redux/userContext';
 
 const Login = ({ navigation }) => {
     const dispatch = useDispatch();
+    const { setUserID } = useUser();
     const [phone, setPhone] = useState('0354757122');
     const [password, setPassword] = useState('Lyllie1410');
 
     const btnRegister = () => {
         navigation.navigate('Register');
-    }
+    };
 
     const handleLogin = () => {
         if (!phone || !password) {
@@ -22,17 +24,18 @@ const Login = ({ navigation }) => {
             .then(response => {
                 console.log('Đăng nhập thành công:', response.payload);
                 Alert.alert('Thông báo', 'Đăng nhập tài khoản thành công');
-                // Lưu userID vào AsyncStorage hoặc Redux state
                 const userID = response.payload.user._id;
-                // Gửi userID đến màn hình chính (BottomTab)
-                navigation.navigate('BottomTab', { screen: 'Cart', params: { userID } });
-                console.log("truyền đi: ", userID)
+
+                setUserID(userID); 
+
+                navigation.navigate('BottomTab');
+                console.log("truyền đi: ", userID);
             })
             .catch(error => {
                 console.error('Đăng nhập tài khoản lỗi:', error.message);
                 Alert.alert('Thông báo', 'Đăng nhập tài khoản thất bại');
             });
-    }
+    };
 
     return (
         <ImageBackground
@@ -45,14 +48,14 @@ const Login = ({ navigation }) => {
                     <Text style={styles.title}>Login</Text>
                     <TextInput
                         style={styles.textInput}
-                        onChangeText={(phoneInput) => setPhone(phoneInput)}
+                        onChangeText={setPhone}
                         placeholder="Phone Number"
                         placeholderTextColor={'gray'}
                         value={phone}
                     />
                     <TextInput
                         style={styles.textInput}
-                        onChangeText={(passwordInput) => setPassword(passwordInput)}
+                        onChangeText={setPassword}
                         placeholder="Password"
                         placeholderTextColor={'gray'}
                         value={password}
@@ -76,10 +79,8 @@ const Login = ({ navigation }) => {
                 </View>
             </View>
         </ImageBackground>
-    )
-}
-
-export default Login;
+    );
+};
 
 const styles = StyleSheet.create({
     textInput: {
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        resizeMode: 'cover', // Hoặc 'stretch' nếu bạn muốn hình nền căng đầy màn hình
+        resizeMode: 'cover',
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -167,3 +168,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 });
+
+export default Login;

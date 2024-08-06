@@ -14,6 +14,13 @@ const Search = () => {
 
     return (
         <View style={styles.container}>
+            {/* Phần header */}
+            <View style={styles.rowTitle}>
+                <Image source={require('../../img/avatar.png')} style={styles.avatar} />
+                <Text style={styles.txtTitle}>Tìm kiếm</Text>
+                <Text style={styles.txtTitle}>     </Text>
+            </View>
+            
             <View style={styles.rowSearch}>
                 <TextInput
                     style={styles.textInput}
@@ -59,6 +66,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         padding: 16,
+    },
+    rowTitle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    avatar: {
+        width: 25,
+        height: 25,
+    },
+    searchIcon: {
+        width: 25,
+        height: 25,
+    },
+    txtTitle: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#333',
     },
     rowSearch: {
         flexDirection: 'row',
